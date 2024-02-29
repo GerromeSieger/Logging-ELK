@@ -85,9 +85,9 @@ resources:
   # requests:
   #   cpu: "100m"
   #   memory: "1536Mi"
-  limits:
-    cpu: "1000m"
-    memory: "1536Mi"
+  # limits:
+  #   cpu: "1000m"
+  #   memory: "1536Mi"
 
 volumeClaimTemplate:
   accessModes: ["ReadWriteOnce"]
@@ -160,7 +160,7 @@ antiAffinityTopologyKey: "kubernetes.io/hostname"
 
 # Hard means that by default pods will only be scheduled if there are enough nodes for them
 # and that they will never end up on the same node. Setting this to soft will do this "best effort"
-antiAffinity: "hard"
+antiAffinity: "soft"
 
 # This is the node affinity settings as defined in
 # https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
@@ -219,25 +219,25 @@ terminationGracePeriod: 120
 #       - curl
 #      - localhost:9600
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-  initialDelaySeconds: 300
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-  successThreshold: 1
+# livenessProbe:
+#   httpGet:
+#     path: /
+#     port: http
+#   initialDelaySeconds: 300
+#   periodSeconds: 10
+#   timeoutSeconds: 5
+#   failureThreshold: 3
+#   successThreshold: 1
 
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-  initialDelaySeconds: 60
-  periodSeconds: 10
-  timeoutSeconds: 5
-  failureThreshold: 3
-  successThreshold: 3
+# readinessProbe:
+#   httpGet:
+#     path: /
+#     port: http
+#   initialDelaySeconds: 60
+#   periodSeconds: 10
+#   timeoutSeconds: 5
+#   failureThreshold: 3
+#   successThreshold: 3
 
 ## Use an alternate scheduler.
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/

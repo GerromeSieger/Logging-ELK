@@ -11,17 +11,17 @@ daemonset:
   envFrom: []
   # - configMapRef:
   #     name: config-secret
-  extraEnvs:
-    - name: "ELASTICSEARCH_USERNAME"
-      valueFrom:
-        secretKeyRef:
-          name: elasticsearch-master-credentials
-          key: username
-    - name: "ELASTICSEARCH_PASSWORD"
-      valueFrom:
-        secretKeyRef:
-          name: elasticsearch-master-credentials
-          key: password
+  extraEnvs: {}
+    # - name: "ELASTICSEARCH_USERNAME"
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: elasticsearch-master-credentials
+    #       key: username
+    # - name: "ELASTICSEARCH_PASSWORD"
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: elasticsearch-master-credentials
+    #       key: password
   # Allows you to add any config files in /usr/share/filebeat
   extraVolumes: []
   # - name: extras
@@ -71,9 +71,9 @@ daemonset:
     # requests:
     #   cpu: "100m"
     #   memory: "100Mi"
-    limits:
-      cpu: "1000m"
-      memory: "200Mi"
+    # limits:
+    #   cpu: "1000m"
+    #   memory: "200Mi"
   tolerations: []
 
 deployment:
@@ -88,17 +88,17 @@ deployment:
   envFrom: []
   # - configMapRef:
   #     name: config-secret
-  extraEnvs:
-    - name: "ELASTICSEARCH_USERNAME"
-      valueFrom:
-        secretKeyRef:
-          name: elasticsearch-master-credentials
-          key: username
-    - name: "ELASTICSEARCH_PASSWORD"
-      valueFrom:
-        secretKeyRef:
-          name: elasticsearch-master-credentials
-          key: password
+  extraEnvs: {}
+    # - name: "ELASTICSEARCH_USERNAME"
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: elasticsearch-master-credentials
+    #       key: username
+    # - name: "ELASTICSEARCH_PASSWORD"
+    #   valueFrom:
+    #     secretKeyRef:
+    #       name: elasticsearch-master-credentials
+    #       key: password
   # Allows you to add any config files in /usr/share/filebeat
   extraVolumes: []
   # - name: extras
@@ -108,27 +108,27 @@ deployment:
   #   mountPath: /usr/share/extras
   #   readOnly: true
   # such as filebeat.yml for deployment
-  filebeatConfig:
-    filebeat.yml: |
-      filebeat.inputs:
-        - type: log
-          paths:
-            - /usr/share/filebeat/logs/filebeat
+  filebeatConfig: {}
+    # filebeat.yml: |
+    #   filebeat.inputs:
+    #     - type: log
+    #       paths:
+    #         - /usr/share/filebeat/logs/filebeat
 
-      output.elasticsearch:
-        host: "${NODE_NAME}"
-        hosts: '["https://${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}"]'
-        username: "${ELASTICSEARCH_USERNAME}"
-        password: "${ELASTICSEARCH_PASSWORD}"
-        protocol: https
-        ssl.certificate_authorities: ["/usr/share/filebeat/certs/ca.crt"]
+    #   output.elasticsearch:
+    #     host: "${NODE_NAME}"
+    #     hosts: '["https://${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}"]'
+    #     username: "${ELASTICSEARCH_USERNAME}"
+    #     password: "${ELASTICSEARCH_PASSWORD}"
+    #     protocol: https
+    #     ssl.certificate_authorities: ["/usr/share/filebeat/certs/ca.crt"]
   nodeSelector: {}
   # A list of secrets and their paths to mount inside the pod
   # This is useful for mounting certificates for security other sensitive values
-  secretMounts:
-    - name: elasticsearch-master-certs
-      secretName: elasticsearch-master-certs
-      path: /usr/share/filebeat/certs/
+  secretMounts: {}
+    # - name: elasticsearch-master-certs
+    #   secretName: elasticsearch-master-certs
+    #   path: /usr/share/filebeat/certs/
   #  - name: filebeat-certificates
   #    secretName: filebeat-certificates
   #    path: /usr/share/filebeat/certs
@@ -176,31 +176,31 @@ imageTag: "8.5.1"
 imagePullPolicy: "IfNotPresent"
 imagePullSecrets: []
 
-livenessProbe:
-  exec:
-    command:
-      - sh
-      - -c
-      - |
-        #!/usr/bin/env bash -e
-        curl --fail 127.0.0.1:5066
-  failureThreshold: 3
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  timeoutSeconds: 5
+# livenessProbe:
+#   exec:
+#     command:
+#       - sh
+#       - -c
+#       - |
+#         #!/usr/bin/env bash -e
+#         curl --fail 127.0.0.1:5066
+#   failureThreshold: 3
+#   initialDelaySeconds: 10
+#   periodSeconds: 10
+#   timeoutSeconds: 5
 
-readinessProbe:
-  exec:
-    command:
-      - sh
-      - -c
-      - |
-        #!/usr/bin/env bash -e
-        filebeat test output
-  failureThreshold: 3
-  initialDelaySeconds: 10
-  periodSeconds: 10
-  timeoutSeconds: 5
+# readinessProbe:
+#   exec:
+#     command:
+#       - sh
+#       - -c
+#       - |
+#         #!/usr/bin/env bash -e
+#         filebeat test output
+#   failureThreshold: 3
+#   initialDelaySeconds: 10
+#   periodSeconds: 10
+#   timeoutSeconds: 5
 
 # Whether this chart should self-manage its service account, role, and associated role binding.
 managedServiceAccount: true
