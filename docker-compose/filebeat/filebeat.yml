@@ -4,5 +4,10 @@ filebeat.inputs:
   paths:
     - /host/logs/*.log
 
+- type: container
+  enabled: true
+  paths:
+    - /var/lib/docker/containers/*/*-json.log
+
 output.logstash:
   hosts: ["logstash:9600"]
