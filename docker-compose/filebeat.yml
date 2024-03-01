@@ -1,0 +1,8 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /host/logs/*.log
+
+output.logstash:
+  hosts: ["logstash:9600"]

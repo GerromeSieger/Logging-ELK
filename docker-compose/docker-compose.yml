@@ -1,6 +1,6 @@
 version: '3.6'
 services:
-  Elasticsearch:
+  elasticsearch:
     image: elasticsearch:7.16.2
     container_name: elasticsearch
     restart: always
@@ -15,7 +15,7 @@ services:
     networks:
       - elk
 
-  Logstash:
+  logstash:
     image: logstash:7.16.2
     container_name: logstash
     restart: always
@@ -23,7 +23,8 @@ services:
     - ./logstash/:/logstash_dir
     command: logstash -f /logstash_dir/logstash.conf 
     depends_on:
-      - Elasticsearch
+      - elasticsearch
+      - filebeat
     ports:
     - '9600:9600'
     environment:
@@ -31,7 +32,7 @@ services:
     networks:
       - elk
 
-  Kibana:
+  kibana:
     image: kibana:7.16.2
     container_name: kibana
     restart: always       
@@ -40,11 +41,22 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://elasticsearch:9200  
     depends_on:
-      - Elasticsearch  
+      - elasticsearch  
     networks:
       - elk
+
+  filebeat:
+    image: elastic/filebeat:7.16.2
+    volumes:
+      - /var/log:/host/logs:ro
+    command: filebeat -c /filebeat.yml
+    depends_on:
+      - logstash
+    networks:
+      - elk      
 volumes:
   elastic_data: {}
 
 networks:
   elk:
+  
