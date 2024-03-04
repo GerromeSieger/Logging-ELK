@@ -16,18 +16,11 @@ filebeat.autodiscover:
   providers:
     - type: docker
       templates:
-      - condition:
-            equals:
-              docker.container.image: theara1011from93kpc/dev:spring-boot-graphql
-        config:
-          - type: container
-            multiline.type: pattern
-            multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^java.lang.RuntimeException:'
-            multiline.negate: false
-            multiline.match: after
-            paths:
-              - /var/lib/docker/containers/${data.docker.container.id}/*.log
-            encoding: utf-8
+        - config:
+            - type: container
+              paths:
+                - /var/lib/docker/containers/${data.docker.container.id}/*.log
+              encoding: utf-8
 
 
 processors:
